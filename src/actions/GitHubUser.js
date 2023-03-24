@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setTopUsers } from "../reducers/users";
+import { setTopUsers, setUserInfo } from "../reducers/users";
 
 const githubApiToken = process.env.REACT_APP_GITHUB_API_TOKEN;
 
@@ -21,3 +21,23 @@ export const getTopUsersAction = (numbeOfUsers = 5) => {
     }
   };
 };
+
+export const getUserDetailsAction = (githubUsername) => {
+  return async (dispatch) => {
+    var userInfo = {};
+    try {
+      const userInfoRes = await axios.get(
+        `https://api.github.com/users/${githubUsername}`,
+        {
+          headers: { Authorization: `Bearer ${githubApiToken}`}
+        }
+      );
+      console.log('userInfoRes', userInfoRes)
+      userInfo = userInfoRes.data;
+      dispatch(setUserInfo(userInfo));
+    } catch (error) {
+      console.log("getTopUsers error: ", error);
+    }
+  };
+};
+

@@ -1,24 +1,27 @@
 import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import styles from "../assets/styles/Home.module.css";
-import Button from "react-bootstrap/Button";
-import { getTopUsersAction } from "../actions/GitHubUser";
+import Image from "react-bootstrap/Image";
+import { getUserDetailsAction } from "../actions/GitHubUser";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const User = () => {
+  const { userInfo } = useSelector((state) => state.users);
   let { githubUser } = useParams();
+  const dispatch = useDispatch();
 
-  console.log("githubUser: ", githubUser);
+  console.log("userInfo: ", userInfo);
 
-/*   useEffect(() => {
-    dispatch(getTopUsersAction(5));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); */
+  useEffect(() => {
+    dispatch(getUserDetailsAction(githubUser));
+  }, [githubUser, dispatch]);
 
   return (
     <Container className={styles.mainContainer}>
-      <h1>User Info </h1>
+      <Image src={userInfo.avatar_url} roundedCircle width={75} />
+      <p>{userInfo.name}</p>
+      <p style={{ color: "gray" }}>{userInfo.location || ""}</p>
     </Container>
   );
 };

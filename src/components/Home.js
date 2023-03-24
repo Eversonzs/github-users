@@ -11,12 +11,9 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("topUsers: ", topUsers);
-
   useEffect(() => {
     dispatch(getTopUsersAction(5));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <Container className={styles.mainContainer}>
